@@ -1,74 +1,89 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Bai_Luyen_tx1._1
+public class Program
 {
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-            SERVICE GV = new SERVICE();
-            while (true)
-            {
-                Console.WriteLine("\nMenu:");
-                Console.WriteLine("0. Thoat");
-                Console.WriteLine("1. Nhap danh sach giao vien");
-                Console.WriteLine("2. Xuat danh sach giao vien");
-                Console.WriteLine("3. Tim kiem ds sach theo khoang");
-                Console.WriteLine("4. Xoa giao vien theo ID");
-                Console.WriteLine("Moi ban nhap lua chon:");
+    private static List<KhachHang> danhSachKhachHang = new List<KhachHang>();
 
-                if (int.TryParse(Console.ReadLine(), out int k))
-                {
-                    switch (k)
-                    {
-                        case 0:
-                            Console.WriteLine("Ket thuc chuong trinh.");
-                            return;
-                        case 1:
-                            GV.NhapDsGiaoVien();
-                            break;
-                        case 2:
-                            GV.Xuat();
-                            break;
-                        case 3:
-                            try
-                            {
-                                Console.WriteLine("Nhap gia tri dau a = ");
-                                int a = int.Parse(Console.ReadLine());
-                                Console.WriteLine("Nhap gia tri cuoi b = ");
-                                int b = int.Parse(Console.ReadLine());
-                                GV.TimGV(a, b);
-                            }
-                            catch (FormatException)
-                            {
-                                Console.WriteLine("Gia tri nhap vao khong hop le. Vui long nhap lai.");
-                            }
-                            break;
-                        case 4:
-                            try
-                            {
-                                Console.WriteLine("Nhap ID can xoa: ");
-                                int ID = int.Parse(Console.ReadLine());
-                                GV.Xoa(ID);
-                            }
-                            catch (FormatException)
-                            {
-                                Console.WriteLine("ID nhap vao khong hop le. Vui long nhap lai.");
-                            }
-                            break;
-                        default:
-                            Console.WriteLine("Ban nhap sai lua chon. Vui long chon lai.");
-                            break;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Nhap sai dinh dang. Vui long nhap so.");
-                }
+    public static void Main()
+    {
+        while (true)
+        {
+            Console.WriteLine("1. Nhap thong tin");
+            Console.WriteLine("2. Hien thi danh sach");
+            Console.WriteLine("3. Xoa khach hang");
+            Console.WriteLine("4. Thoat");
+            Console.Write("Chon mot chuc nang: ");
+            int choice = int.Parse(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1:
+                    NhapThongTin();
+                    break;
+                case 2:
+                    HienThiDanhSach();
+                    break;
+                case 3:
+                    XoaKhachHang();
+                    break;
+                case 4:
+                    return;
+                default:
+                    Console.WriteLine("Lua chon khong hop le. Vui long chon lai.");
+                    break;
+            }
+        }
+    }
+
+    private static void NhapThongTin()
+    {
+        Console.WriteLine("1. Khach hang thuong");
+        Console.WriteLine("2. Khach hang VIP");
+        Console.Write("Chon loai khach hang: ");
+        int loaiKhachHang = int.Parse(Console.ReadLine());
+
+        Console.Write("Nhap ma khach hang: ");
+        string maKhachHang = Console.ReadLine();
+
+        Console.Write("Nhap ngay sinh (dd/MM/yyyy): ");
+        DateTime ngaySinh = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", null);
+
+        Console.Write("Nhap so luong mua: ");
+        int soLuongMua = int.Parse(Console.ReadLine());
+
+        Console.Write("Nhap don gia: ");
+        double donGia = double.Parse(Console.ReadLine());
+
+        if (loaiKhachHang == 1)
+        {
+            danhSachKhachHang.Add(new KhachHang(maKhachHang, ngaySinh, soLuongMua, donGia));
+        }
+        else if (loaiKhachHang == 2)
+        {
+            danhSachKhachHang.Add(new KhachHangVIP(maKhachHang, ngaySinh, soLuongMua, donGia));
+        }
+    }
+
+    public static void HienThiDanhSach()
+    {
+        foreach (var khachHang in danhSachKhachHang)
+        {
+            Console.WriteLine(khachHang);
+        }
+    }
+
+    public static void XoaKhachHang()
+    {
+        Console.Write("Nhap ma khach hang can xoa: ");
+        string MaKhachHang = Console.ReadLine();
+
+        for (int i = 0; i < danhSachKhachHang.Count; i++)
+        {
+            if (danhSachKhachHang[i].maKhachHang == "MaKhachHang")
+            {
+                danhSachKhachHang.RemoveAt(i);
+                break;
             }
         }
     }
